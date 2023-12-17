@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Information App</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            /*
+            max-width: 600px;  Set a maximum width for the flex container
+            margin: auto;  Center the flex container
+            */
+        }
+
+        label {
+          margin: 5px;
+          font-weight: bold;
+        }
+
+        select, input, select {
+          padding: 2px;
+            margin: 2px;
+        }
+
+        #box-container {
+          display: flex;
+          flex-wrap: wrap;
+          width: calc(80% + 315px);
+          gap: 5px;
+        }
+
+        .box {
+            position: relative;
+            width: calc(20% - 5px); /* Five boxes per row with a small gap */
+            height: 150px;
+            background-color: lightblue;
+        }
+
+        #history-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: calc(60% - 25px);
+            gap: 5px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-box {
+            width: calc(25% - 5px);
+            text-align: center;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .chart {
+            width: 20%;
+            height: 150px; /* Adjust the height as needed */
+            margin-top: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+        }
+
+        .check {
+          padding: 3px;
+          border: 1px solid black;
+          height: 10px;
+          width: 10px;
+          display: inline-block;
+          position: relative;
+          bottom: -5px;
+          right: -5px;
+          background-color: white;
+
+        }
+
+        .alarm {
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="box-container">
+  <div class="box">
+      <div class="header"> Robot 1 </div>
+      <div class="info-container" id="info1"> Information about Robot1</div>
+      <div id="timeStamp1"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle1"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down1"></span></div>
+
+  </div>
+  <div class="box">
+        <div class="header"> Robot 2 </div>
+        <div class="info-container" id="info2"> Information about Robot 2</div>
+        <div id="timeStamp2"></div>
+        <div class="alarm"> Idle more than 20s <span class="check" id="idle2"></span></div>
+        <div class="alarm"> Down more than 5min<span class="check" id="down2"></span></div>
+  </div>
+
+  <div class="box">
+      <div class="header"> Robot 3 </div>
+      <div class="info-container" id="info3">Information about Robot 3</div>
+      <div id="timeStamp3"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle3"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down3"></span></div>
+  </div>
+
+  <div class="box">
+      <div class="header"> Robot 4 </div>
+      <div class="info-container" id="info4">Information about Robot 4</div>
+      <div id="timeStamp4"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle4"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down4"></span></div>
+  </div>
+
+  <div class="box">
+      <div class="header"> Robot 5 </div>
+      <div class="info-container" id="info5">Information about Robot 5</div>
+      <div id="timeStamp5"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle5"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down5"></span></div>
+  </div>
+  <div class="box">
+      <div class="header"> Robot 6 </div>
+      <div class="info-container" id="info6">Information about Robot 6</div>
+      <div id="timeStamp6"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle6"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down6"></span></div>
+  </div>
+  <div class="box">
+      <div class="header"> Robot 7 </div>
+      <div class="info-container" id="info7">Information about Robot 7</div>
+      <div id="timeStamp7"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle7"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down7"></span></div>
+
+  </div>
+  <div class="box">
+      <div class="header"> Robot 8 </div>
+      <div class="info-container" id="info8">Information about Robot 8</div>
+      <div id="timeStamp8"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle8"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down8"></span></div>
+
+  </div>
+  <div class="box">
+      <div class="header"> Robot 9 </div>
+      <div class="info-container" id="info9">Information about Robot 9</div>
+      <div id="timeStamp9"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle9"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down9"></span></div>
+
+  </div>
+  <div class="box">
+      <div class="header"> Robot 10 </div>
+      <div class="info-container" id="info10">Information about Robot 10</div>
+      <div id="timeStamp10"></div>
+      <div class="alarm"> Idle more than 20s <span class="check" id="idle10"></span></div>
+      <div class="alarm"> Down more than 5min<span class="check" id="down10"></span></div>
+  </div>
+</div>
+
+<form>
+
+    <label for="fromDate">From Date:</label>
+    <input type="date" id="fromDate" required>
+
+    <label for="fromTime">From Time:</label>
+    <input type="time" id="fromTime" required>
+
+
+    <label for="toDate">To Date:</label>
+    <input type="date" id="toDate" required>
+
+    <label for="toTime">To Time:</label>
+    <input type="time" id="toTime" required>
+
+    <label for="robot_id">Select a Robot (1-10):</label>
+    <select id="robot_id"></select>
+
+    <button type="button" onclick="submitDateTimeRange()">Search</button>
+
+
+</form>
+
+<div id="history-container">
+
+    <div class="history-box" style="background-color: lightblue">
+        <div class="header"> Event </div>
+    </div>
+    <div class="history-box" style="background-color: lightblue">
+        <div class="header"> Count </div>
+    </div>
+    <div class="history-box" style="background-color: lightblue">
+        <div class="header"> Total Duration </div>
+    </div>
+    <div class="history-box" style="background-color: lightblue">
+        <div class="header"> Avg </div>
+    </div>
+    <div class="history-box">
+        <div class="header"> IDLE </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="idle_count"> idle_count </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="idle_duration"> idle_duration </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="idle_avg"> idle_avg </div>
+    </div>
+    <div class="history-box">
+        <div class="header"> PROCESSING </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="processing_count"> processing_count </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="processing_duration"> processing_duration </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="processing_avg"> processing_avg </div>
+    </div>
+    <div class="history-box">
+        <div class="header"> DOWN </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="down_count"> down_count </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="down_duration"> down_duration </div>
+    </div>
+    <div class="history-box">
+        <div class="header" id="down_avg"> down_avg </div>
+    </div>
+
+
+</div>
+
+<canvas id="pie-chart"></canvas>
+
+<table id="myTable">
+<tr>
+    <th>Timestamp</th>
+    <th>State</th>
+</tr>
+</table>
+
+<div id="meantime"></div>
+
+<script>
+    const infoContainer = document.getElementById("info-container");
+    const pieChartCanvas = document.getElementById("pie-chart");
+    const ctx = pieChartCanvas.getContext("2d");
+    let selectedBox = null;
+
+    function submitDateTimeRange() {
+      const fromDate = document.getElementById('fromDate').value;
+      const fromTime = document.getElementById('fromTime').value;
+
+      const toDate = document.getElementById('toDate').value;
+      const toTime = document.getElementById('toTime').value;
+
+      const fromDateTime = `${fromDate} ${fromTime}`;
+      const toDateTime = `${toDate} ${toTime}`;
+
+      const robot_id = document.getElementById('robot_id').value;
+
+      console.log('From Date and Time:', fromDateTime);
+      console.log('To Date and Time:', toDateTime);
+      console.log('Robot id: ', robot_id)
+
+      const requestBody = {
+        id: robot_id,
+        fromDateTime,
+        toDateTime
+    };
+
+      fetch('/history', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            // Fill table data
+
+            document.getElementById("idle_count").innerHTML = data.STATE_COUNT.IDLE;
+            document.getElementById("idle_duration").innerHTML = formatTime(data.STATE_TIME.IDLE);
+            document.getElementById("idle_avg").innerHTML = `${(data.STATE_TIME.IDLE / data.STATE_COUNT.IDLE).toFixed(2)}s`;
+            document.getElementById("processing_count").innerHTML = data.STATE_COUNT.PROCESSING;
+            document.getElementById("processing_duration").innerHTML = formatTime(data.STATE_TIME.PROCESSING);
+            document.getElementById("processing_avg").innerHTML = `${(data.STATE_TIME.PROCESSING / data.STATE_COUNT.PROCESSING).toFixed(2)}s`;
+            document.getElementById("down_count").innerHTML = data.STATE_COUNT.DOWN;
+            document.getElementById("down_duration").innerHTML = formatTime(data.STATE_TIME.DOWN);
+            document.getElementById("down_avg").innerHTML = `${(data.STATE_TIME.DOWN / data.STATE_COUNT.DOWN).toFixed(2)}s`;
+
+            document.getElementById("meantime").innerHTML = "Mean time between failures: " + formatTime(data.MEAN_TIME);
+
+            populateTable(data.HISTORY);
+
+            // Update piechart
+
+            pieData = [data.STATE_TIME.IDLE, data.STATE_TIME.PROCESSING, data.STATE_TIME.DOWN]
+            pieChart.data.datasets[0].data = pieData;
+            pieChart.update();
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    const quantityDropdown = document.getElementById("robot_id");
+    for (let i = 1; i <= 10; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      quantityDropdown.add(option);
+    }
+
+    function getStateInfo() {
+        fetch('http://localhost:5000/state', {
+            method: "POST",
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            for (let i = 1; i <= 10; i++) {
+                let rob_data = data[i];
+                document.getElementById('info'+i).innerHTML = rob_data.state;
+                document.getElementById('timeStamp'+i).innerHTML = rob_data.time;
+
+                if (rob_data.alert == "Idle") {
+                    document.getElementById('idle'+i).style.backgroundColor = "yellow";
+                }
+                else if (rob_data.alert == "Down") {
+                    document.getElementById('down'+i).style.backgroundColor = "red";
+                }
+                else {
+                    document.getElementById('down'+i).style.backgroundColor = "white";
+                    document.getElementById('idle'+i).style.backgroundColor = "white";
+                }
+
+            }
+
+
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+    }
+
+    function populateTable(history) {
+        var table = document.getElementById("myTable");
+
+        // Clear existing rows
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+
+        // Iterate through the list and add rows to the table
+        let i = 0;
+        for (var rivi of history) {
+            var row = table.insertRow(table.rows.length);
+            if (i % 2 === 0) {
+                row.style.backgroundColor = "lightblue";
+            }
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            console.log(formatDate(rivi[2]))
+            cell1.innerHTML = formatDate(rivi[2]);
+            cell2.innerHTML = rivi[1];
+            i++;
+        }
+    }
+
+    // Initially populate the table
+
+    const data = {
+                labels: ["Idle", "Processing", "Down"],
+                datasets: [{
+                    data: [1, 1, 1],
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                }]
+            };
+
+            const options = {
+                responsive: false,
+            };
+
+            // Create the pie chart
+            var pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: options
+            });
+    function formatDate(timestamp){
+        const parsedTimestamp = new Date(timestamp);
+        const formattedTimestamp =
+          `${parsedTimestamp.getFullYear()}-${parsedTimestamp.getMonth() + 1}-${parsedTimestamp.getDate()} ` +
+          `${parsedTimestamp.getHours()}:${parsedTimestamp.getMinutes()}:${parsedTimestamp.getSeconds()}`;
+        return formattedTimestamp;
+
+    }
+
+
+    function formatTime(seconds) {
+
+        seconds = Math.abs(parseFloat(seconds));
+
+        // Calculate hours, minutes, and remaining seconds
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+
+        const timeString = `${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`;
+
+        return timeString;
+    }
+    //Polls states and alarms once a second
+    setInterval(getStateInfo, 1000)
+
+
+</script>
+
+</body>
+</html>
